@@ -93,11 +93,32 @@ app.post('/login', async (req, res) => {
 app.get('/plannings', async (req, res) => {
   // Requires being authenticated:
   if (req.userAuthenticated) {
-    
+    try {
+      res.json(await pDB.getAllPlannings());
+    } catch (ex) {
+      errServer(res, ex);
+    }
   } else {
     errNonAuth(res);
   }
 });
+
+app.post('/plannings', async (req, res) => {
+  // Requires being authenticated:
+  if (req.userAuthenticated) {
+    const name = (req.body.name) ? req.body.name : '';
+    try {
+      const uuid = await pDB.insertPlanning(name);
+      res.json({uuid});
+    } catch (ex) {
+      errServer(res, ex);
+    } 
+  } else {
+    errNonAuth(res);
+  }
+});
+
+
 
 app.get('/service-check', (req, res) => {
   res.send('OK');
