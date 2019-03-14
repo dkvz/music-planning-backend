@@ -3,11 +3,15 @@ const sqlite3 = require('sqlite3').verbose();
 const config = require('./config');
 const PlanningDB = require('./lib/planning-db');
 const SessionManager = require('./lib/session-manager');
+const cookieParser = require('cookie-parser');
+const { authMiddleware } = require('./lib/middlewares');
 
 const app = express();
 // We need the JSON middleware because all POST
 // requests will send JSON bodies:
+app.use(cookieParser());
 app.use(express.json());
+app.use(authMiddleware);
 
 const db = new sqlite3.Database(config.database, sqlite3.OPEN_READWRITE, (err) => {
   if (err) {
@@ -61,20 +65,24 @@ app.post('/login', async (req, res) => {
       try {
         if (await pDB.checkLogin(req.body.username, req.body.password)) {
           // Send a cookie along:
-          res.cookie('token', 'qsdfjmlqskdjf');
+          res.cookie('token', sessions.newSession());
           res.send('OK');
+          return;
         } else {
           // Non authorized.
           errNonAuth(res);
+          return;
         }
       } catch (ex) {
         errServer(res, ex);
-      }  
+        return;
+      }
+    } else if(req.body.token) {
+
     }
-  } else {
-    res.status(400);
-    res.send('Bad request body format');
   }
+  res.status(400);
+  res.send('Bad request body format');
 });
 
 app.get('/service-check', (req, res) => {
