@@ -52,15 +52,6 @@ app.get('/', async (req, res) => {
     if (err) console.log(err);
     console.log(row);
   });*/
-
-/*   let result;
-  try {
-    result = await pDB.checkLogin('admin', 'brolN7');
-  } catch (ex) {
-    console.log(ex);
-  }
-  res.send(result); */
-
   res.send('NOTHING HERE');
 });
 
@@ -97,6 +88,15 @@ app.post('/login', async (req, res) => {
   }
   res.status(400);
   res.send('Bad request body format');
+});
+
+app.get('/plannings', async (req, res) => {
+  // Requires being authenticated:
+  if (req.userAuthenticated) {
+    
+  } else {
+    errNonAuth(res);
+  }
 });
 
 app.get('/service-check', (req, res) => {
