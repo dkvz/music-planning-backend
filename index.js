@@ -118,7 +118,11 @@ app.post('/plannings', async (req, res) => {
   }
 });
 
-
+app.get('/plannings/:id', async (req, res) => {
+  // req.params.id is supposed to be set.
+  // Supposed to be a uuid string.
+  
+});
 
 app.get('/service-check', (req, res) => {
   res.send('OK');
