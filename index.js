@@ -1,0 +1,86 @@
+const express = require('express');
+const sqlite3 = require('sqlite3').verbose();
+const config = require('./config');
+const PlanningDB = require('./lib/planning-db');
+const SessionManager = require('./lib/session-manager');
+
+const app = express();
+// We need the JSON middleware because all POST
+// requests will send JSON bodies:
+app.use(express.json());
+
+const db = new sqlite3.Database(config.database, sqlite3.OPEN_READWRITE, (err) => {
+  if (err) {
+    console.log('Database connection failed.');
+    process.exit();
+  }
+});
+// To hopefully get the best concurrent mode:
+db.run('PRAGMA journal_mode = WAL;');
+// Get the data access class:
+pDB = new PlanningDB(db);
+
+// Handling user sessions in memory for the best
+// quick and dirty effect.
+const sessions = new SessionManager();
+
+const errServer = (res, msg) => {
+  res.status(500);
+  res.send('Server error');
+  if (msg) console.log(msg);
+};
+
+const errNonAuth = (res) => {
+  res.status(403);
+  res.send('Non authorized');
+};
+
+app.get('/', async (req, res) => {
+  /*db.each('SELECT * FROM login', (err, row) => {
+    if (err) console.log(err);
+    console.log(row);
+  });*/
+
+/*   let result;
+  try {
+    result = await pDB.checkLogin('admin', 'brolN7');
+  } catch (ex) {
+    console.log(ex);
+  }
+  res.send(result); */
+
+  res.send('NOTHING HERE');
+});
+
+app.post('/login', async (req, res) => {
+  // We should have a JSON body with:
+  // - username
+  // - EITHER password OR token
+  if (req.body && req.body.username && (req.body.password || req.body.token)) {
+    if (req.body.password) {
+      try {
+        if (await pDB.checkLogin(req.body.username, req.body.password)) {
+          // Send a cookie along:
+          res.cookie('token', 'qsdfjmlqskdjf');
+          res.send('OK');
+        } else {
+          // Non authorized.
+          errNonAuth(res);
+        }
+      } catch (ex) {
+        errServer(res, ex);
+      }  
+    }
+  } else {
+    res.status(400);
+    res.send('Bad request body format');
+  }
+});
+
+app.get('/service-check', (req, res) => {
+  res.send('OK');
+});
+
+app.listen(config.port, () => {
+  console.log(`Listening on port ${config.port}.`);
+});
