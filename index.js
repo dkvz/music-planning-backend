@@ -7,11 +7,6 @@ const cookieParser = require('cookie-parser');
 const { authMiddleware } = require('./lib/middlewares');
 
 const app = express();
-// We need the JSON middleware because all POST
-// requests will send JSON bodies:
-app.use(cookieParser());
-app.use(express.json());
-app.use(authMiddleware);
 
 const db = new sqlite3.Database(config.database, sqlite3.OPEN_READWRITE, (err) => {
   if (err) {
@@ -27,6 +22,19 @@ pDB = new PlanningDB(db);
 // Handling user sessions in memory for the best
 // quick and dirty effect.
 const sessions = new SessionManager();
+
+/**
+ * MIDDLEWARES HERE
+ */
+// We need the JSON middleware because all POST
+// requests will send JSON bodies:
+app.use(cookieParser());
+app.use(express.json());
+// The authentication middleware needs the sessions manager:
+app.use(authMiddleware(sessions));
+/**
+ * END MIDDLEWARES
+ */
 
 const errServer = (res, msg) => {
   res.status(500);
@@ -78,7 +86,13 @@ app.post('/login', async (req, res) => {
         return;
       }
     } else if(req.body.token) {
-
+      if (sessions.checkSession(req.body.token)) {
+        sessions.refreshSession(req.body.token);
+        res.cookie('token', req.body.token);
+        res.send('OK');
+      } else {
+        errNonAuth(res);
+      }
     }
   }
   res.status(400);
