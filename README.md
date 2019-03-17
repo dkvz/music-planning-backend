@@ -49,3 +49,4 @@ HASHED_PWD = sha1(password + salt)
 # TODO
 - [ ] Check if just providing params after the query in DB access methods from SQLite3 actually prevents SQL injection.
 - [ ] Does rejecting a promise make it catchable in a try catch when using async / await ?
+- [ ] Add an option to disable CORS.

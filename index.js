@@ -6,6 +6,7 @@ const SessionManager = require('./lib/session-manager');
 const cookieParser = require('cookie-parser');
 const { authMiddleware } = require('./lib/middlewares');
 const BadRateLimiter = require('./lib/bad-rate-limiter');
+const cors = require('cors');
 
 const app = express();
 
@@ -33,6 +34,7 @@ app.use(cookieParser());
 app.use(express.json());
 // The authentication middleware needs the sessions manager:
 app.use(authMiddleware(sessions));
+app.use(cors());
 /**
  * END MIDDLEWARES
  */
