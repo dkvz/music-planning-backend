@@ -21,6 +21,9 @@ But I could probably do something simpler like calculating the general request r
 
 Let's create a bad rate limiter as a class.
 
+### CORS
+I'm having issues with CORS because I wanted to use cookies for authentication and that requires very specific headers, including using `{withCredentials: true}` as an Axios option. But that's not enough, withCredentials will NOT work if the Access-Control-Allow-Origin header is set to "*", which it is if you use the cors middleware with no options.
+
 ## Database
 I picked SQLite because of ease of hosting (though you do need write privileges somewhere for it to work).
 

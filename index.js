@@ -34,7 +34,7 @@ app.use(cookieParser());
 app.use(express.json());
 // The authentication middleware needs the sessions manager:
 app.use(authMiddleware(sessions));
-app.use(cors());
+app.use(cors({credentials: true, origin: config.corsOrigin}));
 /**
  * END MIDDLEWARES
  */
