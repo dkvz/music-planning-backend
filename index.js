@@ -79,7 +79,7 @@ app.post('/login', async (req, res) => {
         if (await pDB.checkLogin(req.body.username, req.body.password)) {
           // Send a cookie along:
           res.cookie('token', sessions.newSession());
-          successResponse();
+          successResponse(res);
           return;
         } else {
           // Non authorized.
@@ -94,7 +94,7 @@ app.post('/login', async (req, res) => {
       if (sessions.checkSession(req.body.token)) {
         sessions.refreshSession(req.body.token);
         res.cookie('token', req.body.token);
-        successResponse();
+        successResponse(res);
       } else {
         errNonAuth(res);
       }
@@ -137,7 +137,7 @@ app.delete('/plannings', async (req, res) => {
     if (req.body.planning_id && req.body.planning_id.length > 2) {
       try {
         await pDB.deletePlanning(req.body.planning_id);
-        successResponse();
+        successResponse(res);
       } catch (ex) {
         errServer(res);
       }
@@ -199,7 +199,7 @@ app.post('/events', async (req, res) => {
           req.body.name,
           req.body.description
         );
-        successResponse();
+        successResponse(res);
       } else {
         // We need to check if planning_id was provided
         // and if it exists:
@@ -213,7 +213,7 @@ app.post('/events', async (req, res) => {
               req.body.name,
               req.body.description
             );
-            successResponse();
+            successResponse(res);
         } else {
           errNotFound(res);
         }
@@ -233,7 +233,7 @@ app.delete('/events', async (req, res) => {
     if (req.body.id) {
       try {
         await pDB.deleteEvent(req.body.id);
-        successResponse();
+        successResponse(res);
       } catch (ex) {
         errServer(res, ex);
       }
@@ -259,7 +259,7 @@ app.post('/presence', async (req, res) => {
           req.body.instrument_code, 
           req.body.presence
         );
-        successResponse();
+        successResponse(res);
       } else {
         // Adding, check that the event exists:
         if (req.body.event_id && 
@@ -271,7 +271,7 @@ app.post('/presence', async (req, res) => {
               req.body.instrument_code,
               req.body.presence
             );
-            successResponse();
+            successResponse(res);
         } else {
           res.status(400);
           res.send(`Bad Request - Missing event ID 
@@ -291,7 +291,7 @@ app.delete('/presence', async (req, res) => {
     if (req.body.id) {
       try {
         await pDB.deletePresence(req.body.id);
-        successResponse();
+        successResponse(res);
       } catch (ex) {
         errServer(res, ex);
       }
@@ -333,7 +333,7 @@ app.post('/all-presence', async (req, res) => {
             }
           });
           await Promise.all(inserts);
-          successResponse();
+          successResponse(res);
         } catch (ex) {
           errServer(res, ex);
         }
@@ -348,7 +348,7 @@ app.post('/all-presence', async (req, res) => {
 });
 
 app.get('/service-check', (req, res) => {
-  successResponse();
+  successResponse(res);
 });
 
 app.listen(config.port, () => {
