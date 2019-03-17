@@ -1,6 +1,6 @@
 const config = {
   database: './database/planning.sqlite',
-  port: 8080
+  port: 8081
 };
 
 module.exports = config;
