@@ -9,6 +9,8 @@ First run `npm install` then `npm run dev` to start the server with autoreload e
 ## API endpoints
 I currently have them on a piece of paper and since I'm powering through this I might not copy the enpoint documentation. Yet.
 
+-> I had to change delete because it's never supposed to have a request body and Axios actually sort of enforces that.
+
 ### Timestamps
 Timestamps in database are in seconds but JS uses milliseconds. The API expects to receive timestamps in milliseconds, but will send timestamps in seconds. Sorry.
 

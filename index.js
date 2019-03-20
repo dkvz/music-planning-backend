@@ -132,11 +132,11 @@ app.post('/plannings', async (req, res) => {
   }
 });
 
-app.delete('/plannings', async (req, res) => {
+app.delete('/plannings/:id', async (req, res) => {
   if (req.userAuthenticated) {
-    if (req.body.planning_id && req.body.planning_id.length > 2) {
+    if (req.params.id && req.params.id.length > 2) {
       try {
-        await pDB.setPlanningDeleted(req.body.planning_id);
+        await pDB.setPlanningDeleted(req.params.id);
         successResponse(res);
       } catch (ex) {
         errServer(res, ex);
@@ -228,11 +228,11 @@ app.post('/events', async (req, res) => {
 
 // Most of this could be refactored since we have
 // multiple similar delete endpoints.
-app.delete('/events', async (req, res) => {
+app.delete('/events/:id', async (req, res) => {
   if (req.userAuthenticated) {
-    if (req.body.id) {
+    if (req.params.id) {
       try {
-        await pDB.deleteEvent(req.body.id);
+        await pDB.deleteEvent(req.params.id);
         successResponse(res);
       } catch (ex) {
         errServer(res, ex);
@@ -286,11 +286,11 @@ app.post('/presence', async (req, res) => {
   }
 });
 
-app.delete('/presence', async (req, res) => {
+app.delete('/presence/:id', async (req, res) => {
   if (req.userAuthenticated) {
-    if (req.body.id) {
+    if (req.params.id) {
       try {
-        await pDB.deletePresence(req.body.id);
+        await pDB.deletePresence(req.params.id);
         successResponse(res);
       } catch (ex) {
         errServer(res, ex);
