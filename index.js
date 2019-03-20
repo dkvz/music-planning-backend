@@ -139,7 +139,7 @@ app.delete('/plannings', async (req, res) => {
         await pDB.setPlanningDeleted(req.body.planning_id);
         successResponse(res);
       } catch (ex) {
-        errServer(res);
+        errServer(res, ex);
       }
     } else {
       res.status(400);
