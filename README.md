@@ -29,7 +29,8 @@ I picked SQLite because of ease of hosting (though you do need write privileges 
 
 I decided to use this package because it's mentioned on the SQLite website: https://github.com/mapbox/node-sqlite3
 
-Server will expect a database to be found in the "database" folder, with the filename provided in config.js. You can copy and rename the planning.empty.sqlite file.
+Server will expect a database to be found in the "database" folder, with the filename provided in config.js.
+You can initialize the database using "sqlite_model.sql" at the root of the project.
 
 All the database access methods are supposed to be surrounded by try catch somehow. All of them will return promises.
 
@@ -39,6 +40,16 @@ Delete and update operations will return success even if the entry actually does
 ### SQLite doc
 * [Main ways to execute statements, get data etc.](https://github.com/mapbox/node-sqlite3/wiki/API)
 * [How to do queries sequentially (since they normally use callbacks)](https://github.com/mapbox/node-sqlite3/wiki/Control-Flow)
+
+### DB Updates
+
+#### Adding deleted flag for plannings and category for events
+For categories I'm not creating a table with the category names etc. It's just going to be 1 and 2 (**CAREFUL NOT TO USE 0**).
+
+```sql
+ALTER TABLE planning ADD deleted INTEGER DEFAULT 0;
+ALTER TABLE event ADD category INTEGER DEFAULT 1;
+```
 
 ## Sessions
 I use the UUID generator from here: https://gist.github.com/jed/982883
@@ -53,3 +64,4 @@ HASHED_PWD = sha1(password + salt)
 - [ ] Check if just providing params after the query in DB access methods from SQLite3 actually prevents SQL injection.
 - [ ] Does rejecting a promise make it catchable in a try catch when using async / await ?
 - [ ] Add an option to disable CORS.
+- [ ] Dates are really weird in database. Default to current timestamp is putting a date text in there, but I'm using a JS timestamp otherwise. Both are working and can be provided to JS Date() constructor, so it works, but uh... Yeah

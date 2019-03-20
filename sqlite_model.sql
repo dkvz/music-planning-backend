@@ -9,7 +9,8 @@ CREATE TABLE login (
 CREATE TABLE planning (
   uuid TEXT PRIMARY KEY,
   name TEXT,
-  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  deleted INTEGER DEFAULT 0
 );
 
 CREATE TABLE event (
@@ -17,7 +18,8 @@ CREATE TABLE event (
   planning_uuid TEXT NOT NULL,
   event_date TIMESTAMP NOT NULL,
   name TEXT,
-  description TEXT
+  description TEXT,
+  category INTEGER DEFAULT 1
 );
 
 CREATE TABLE presence (

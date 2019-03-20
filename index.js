@@ -136,7 +136,7 @@ app.delete('/plannings', async (req, res) => {
   if (req.userAuthenticated) {
     if (req.body.planning_id && req.body.planning_id.length > 2) {
       try {
-        await pDB.deletePlanning(req.body.planning_id);
+        await pDB.setPlanningDeleted(req.body.planning_id);
         successResponse(res);
       } catch (ex) {
         errServer(res);
