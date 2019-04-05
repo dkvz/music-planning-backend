@@ -259,19 +259,19 @@ app.post('/presence', async (req, res) => {
           req.body.instrument_code, 
           req.body.presence
         );
-        successResponse(res);
+        res.json({id: req.body.id});
       } else {
         // Adding, check that the event exists:
         if (req.body.event_id && 
           await pDB.getEvent(req.body.event_id) && 
           req.body.name) {
-            await pDB.createPresence(
+            const newId = await pDB.createPresence(
               req.body.event_id, 
               req.body.name,
               req.body.instrument_code,
               req.body.presence
             );
-            successResponse(res);
+            res.json({id: newId});
         } else {
           res.status(400);
           res.send(`Bad Request - Missing event ID 
