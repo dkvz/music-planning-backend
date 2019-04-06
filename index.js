@@ -197,7 +197,8 @@ app.post('/events', async (req, res) => {
           req.body.id,
           eventDate,
           req.body.name,
-          req.body.description
+          req.body.description,
+          req.body.category || 1
         );
         successResponse(res);
       } else {
@@ -211,7 +212,8 @@ app.post('/events', async (req, res) => {
               req.body.planning_id,
               eventDate,
               req.body.name,
-              req.body.description
+              req.body.description,
+              req.body.category || 1
             );
             successResponse(res);
         } else {
