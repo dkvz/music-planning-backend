@@ -67,4 +67,4 @@ HASHED_PWD = sha1(password + salt)
 - [ ] Does rejecting a promise make it catchable in a try catch when using async / await ?
 - [ ] Add an option to disable CORS.
 - [ ] Dates are really weird in database. Default to current timestamp is putting a date text in there, but I'm using a JS timestamp otherwise. Both are working and can be provided to JS Date() constructor, so it works, but uh... Yeah
-- [ ] The "presence" field in the presence table is actually useless since an entry existing already signifies presence.
+- [ ] At some point I got into my head that the "presence" field in the presence table is actually useless since an entry existing already signifies presence. But that's not true at all, we might need it to also show absences.
