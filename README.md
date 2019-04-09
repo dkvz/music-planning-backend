@@ -26,6 +26,37 @@ Let's create a bad rate limiter as a class.
 ### CORS
 I'm having issues with CORS because I wanted to use cookies for authentication and that requires very specific headers, including using `{withCredentials: true}` as an Axios option. But that's not enough, withCredentials will NOT work if the Access-Control-Allow-Origin header is set to "*", which it is if you use the cors middleware with no options.
 
+To add multiple allowed origins it looks like you have to do something weird with a function that checks if origin is allowed or not as shown on this page: https://expressjs.com/en/resources/middleware/cors.html
+
+From what I understand I need to do something like that:
+```js
+var corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1 || !origin) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+}
+```
+
+Which led me to have this in index.js when I register the middleware:
+```js
+app.use(cors({
+  credentials: true, 
+  origin: function(origin, callback) {
+    if (config.corsOrigin.indexOf(origin) !== -1 || !origin) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+}));
+```
+
+Apparently you can pass middlewares to Express routes, and that's how you would easily only selectively enable CORS with different options on different routes.
+
 ## Database
 I picked SQLite because of ease of hosting (though you do need write privileges somewhere for it to work).
 

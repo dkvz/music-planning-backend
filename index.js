@@ -34,7 +34,18 @@ app.use(cookieParser());
 app.use(express.json());
 // The authentication middleware needs the sessions manager:
 app.use(authMiddleware(sessions));
-app.use(cors({credentials: true, origin: config.corsOrigin}));
+//app.use(cors({credentials: true, origin: config.corsOrigin[0]}));
+app.use(cors({
+  credentials: true, 
+  origin: function(origin, callback) {
+    if (config.corsOrigin.indexOf(origin) !== -1 || !origin) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+}));
+
 /**
  * END MIDDLEWARES
  */
