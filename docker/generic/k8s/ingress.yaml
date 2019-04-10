@@ -1,0 +1,23 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: backend
+  namespace: music-planning
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    kubernetes.io/tls-acme: "true"
+    certmanager.k8s.io/cluster-issuer: letsencrypt-prod
+    ingress.kubernetes.io/rewrite-target: /
+spec:
+  tls:
+  - hosts:
+    - plan-api.lamusiquedelagarde.be
+    secretName: backend
+  rules:
+  - host: plan-api.lamusiquedelagarde.be
+    http:
+      paths:
+      - backend:
+          serviceName: backend
+          servicePort: 8081
+        path: /
