@@ -43,13 +43,15 @@ spec:
             - name: REPOSITORY
               value: https://github.com/dkvz/music-planning-backend.git
             - name: COMMIT
-              value: cdb74076757c1f2fa610c0a74caa5ed0585f4d1a
+              value: 9d39a4599e7c9e66e68993282d788baf4a5bb544
+            - name: PLANNING_DB_PATH
+              value: '/usr/src/database'
           ports:
             - name: http
               containerPort: 8081
           volumeMounts:
             - name: database
-              mountPath: /usr/src/app/database
+              mountPath: /usr/src/database
       imagePullSecrets:
         - name: regcred
       volumes:
