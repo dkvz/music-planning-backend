@@ -6,6 +6,13 @@ Requires NodeJS 10+.
 
 First run `npm install` then `npm run dev` to start the server with autoreload enabled.
 
+## Hosting
+The easiest is to use systemd to keep the server alive (through a simple ``npm start`) on a modern Linux system. The process can even be vertically scaled since SQLite WAL mode is supposed to handle concurrency.
+
+I would have said any Node cloud hosting service would do but that's not true since I'm using SQLite, you need write permission and persistent storage to the database path configured in `config.js`.
+
+However, I'm trying out Kubernetes with this project, which is why weird things are happening in the "docker" folder.
+
 ## API endpoints
 I currently have them on a piece of paper and since I'm powering through this I might not copy the enpoint documentation. Yet.
 
