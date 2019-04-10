@@ -117,6 +117,11 @@ app.post('/login', async (req, res) => {
   res.send('Bad request body format');
 });
 
+app.get('/check-login', (req, res) => {
+  if (req.userAuthenticated) successResponse(res);
+  else errNonAuth(res);
+});
+
 app.get('/plannings', async (req, res) => {
   // Requires being authenticated:
   if (req.userAuthenticated) {
