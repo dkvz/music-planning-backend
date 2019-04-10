@@ -5,7 +5,7 @@
 
 # This won't work without some kind of storage for the database
 
-# docker build -t nodeserver:1 --build-arg repository='https://github.com/dkvz/music-planning-backend' - < standalone.Dockerfile
+# docker build -t nodeserver:1 --build-arg repository='https://github.com/dkvz/music-planning-backend.git' - < standalone.Dockerfile
 
 # The image is not generic in any way... We need some sort of script that will download the repo, install the dependencies and run the thing.
 
