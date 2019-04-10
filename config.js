@@ -1,5 +1,5 @@
 const config = {
-  database: './database/planning.sqlite',
+  database: './database/planning.sqlite' || process.env.PLANNING_DB_PATH,
   port: 8081,
   corsOrigin: [
     'http://localhost:8080',

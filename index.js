@@ -16,6 +16,8 @@ const db = new sqlite3.Database(config.database, sqlite3.OPEN_READWRITE, (err) =
     process.exit();
   }
 });
+console.log(`Database ${config.database} connected.`);
+
 // To hopefully get the best concurrent mode:
 db.run('PRAGMA journal_mode = WAL;');
 // Get the data access class:
