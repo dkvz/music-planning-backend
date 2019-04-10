@@ -43,9 +43,9 @@ spec:
             - name: REPOSITORY
               value: https://github.com/dkvz/music-planning-backend.git
             - name: COMMIT
-              value: 9d39a4599e7c9e66e68993282d788baf4a5bb544
+              value: 6cde797233c1f5fbf74de24ef0d0b99ba80f5fe7
             - name: PLANNING_DB_PATH
-              value: '/usr/src/database'
+              value: '/usr/src/database/planning.sqlite'
           ports:
             - name: http
               containerPort: 8081
@@ -65,6 +65,8 @@ metadata:
   name: backend
   namespace: music-planning
 spec:
+  selector:
+    app: music-planning
   ports:
     - protocol: TCP
       port: 8081
