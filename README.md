@@ -8,6 +8,7 @@ First run `npm install` then `npm run dev` to start the server with autoreload e
 
 ## Hosting
 The easiest is to use systemd to keep the server alive (through a simple ``npm start`) on a modern Linux system. The process can even be vertically scaled since SQLite WAL mode is supposed to handle concurrency.
+**NB:** I ended up disabling WAL mode. I don't think I understand how it works, will require a lot more experiments.
 
 I would have said any Node cloud hosting service would do but that's not true since I'm using SQLite, you need write permission and persistent storage to the database path configured in `config.js`.
 
@@ -98,6 +99,10 @@ I use the UUID generator from here: https://gist.github.com/jed/982883
 Accounts passwords are hashed in sha1 with hex representation as follows:
 ```
 HASHED_PWD = sha1(password + salt)
+```
+
+```
+INSERT INTO login (name, password, salt, email) VALUES ('gestion', '<HASHEDPWD>', '<SALT>', 'someemail@truc.com');
 ```
 
 # TODO

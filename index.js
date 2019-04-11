@@ -19,7 +19,10 @@ const db = new sqlite3.Database(config.database, sqlite3.OPEN_READWRITE, (err) =
 console.log(`Database ${config.database} connected.`);
 
 // To hopefully get the best concurrent mode:
-db.run('PRAGMA journal_mode = WAL;');
+if (config.walMode) db.run('PRAGMA journal_mode = WAL;');
+// I gave up on WAL because it seems to be causing issues
+// because i never close the active connection.
+
 // Get the data access class:
 pDB = new PlanningDB(db);
 
