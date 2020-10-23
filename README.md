@@ -6,6 +6,12 @@ Requires NodeJS 10+.
 
 First run `npm install` then `npm run dev` to start the server with autoreload enabled.
 
+If you get an error building the sqlite3 module, the following command solved it for me (I mean, one of these should do it):
+```
+npm install sqlite3 --build-from-source
+npm install sqlite3 --build-from-source.
+```
+
 ## Hosting
 The easiest is to use systemd to keep the server alive (through a simple ``npm start`) on a modern Linux system. The process can even be vertically scaled since SQLite WAL mode is supposed to handle concurrency.
 **NB:** I ended up disabling WAL mode. I don't think I understand how it works, will require a lot more experiments.
